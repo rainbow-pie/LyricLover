@@ -35,6 +35,7 @@ public class GeniusAPI {
         });
         return result;
     }
+
     public static CompletableFuture<String> searchSongsByName(String name) throws IOException {
         Request request = new Request.Builder()
                 .url("https://genius-song-lyrics1.p.rapidapi.com/search?q=" + name)

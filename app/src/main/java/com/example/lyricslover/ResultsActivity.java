@@ -42,7 +42,6 @@ public class ResultsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         if (mSongsList.size() != 0) {
 
             SongsAdapter songsAdapter = new SongsAdapter(mSongsList, (v, position) -> {

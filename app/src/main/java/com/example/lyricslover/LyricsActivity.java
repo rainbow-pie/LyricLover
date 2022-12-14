@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.util.Base64;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lyricslover.databinding.ActivityLyricsBinding;
@@ -46,6 +47,7 @@ public class LyricsActivity extends AppCompatActivity {
 
         WebView lyricsView = findViewById(R.id.lyricsView);
         WebView pictureView = findViewById(R.id.pictureView);
+        ImageView noDataView = findViewById(R.id.noDataImage);
 
         CompletableFuture<String> data = null;
         String lyricsHtml = "";
@@ -56,10 +58,13 @@ public class LyricsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String unencodedHtml = "<html><body>" + styleRedirectionFix + lyricsHtml + "</body></html>";
-        String encodedHtml = Base64.encodeToString(unencodedHtml.getBytes(),
-                Base64.NO_PADDING);
-        lyricsView.loadData(encodedHtml, "text/html", "base64");
+        if (lyricsHtml.equals("404")) noDataView.setImageResource(R.drawable.copyright);
+        else {
+            String unencodedHtml = "<html><body>" + styleRedirectionFix + lyricsHtml + "</body></html>";
+            String encodedHtml = Base64.encodeToString(unencodedHtml.getBytes(),
+                    Base64.NO_PADDING);
+            lyricsView.loadData(encodedHtml, "text/html", "base64");
+        }
 
         pictureView.getSettings().setLoadWithOverviewMode(true);
         pictureView.getSettings().setUseWideViewPort(true);
@@ -69,11 +74,13 @@ public class LyricsActivity extends AppCompatActivity {
     private String parseLyrics(String json) throws JSONException {
         JSONObject object = new JSONObject(json);
         int status = object.getJSONObject("meta").getInt("status");
+        if (status == 404) { return "404"; }
         System.out.println("status: " + status);
 
         JSONObject response = object.getJSONObject("response");
         JSONObject lyricsWrapper = response.getJSONObject("lyrics");
         String lyrics = lyricsWrapper.getJSONObject("lyrics").getJSONObject("body").getString("html");
+
 
         return lyrics;
     }

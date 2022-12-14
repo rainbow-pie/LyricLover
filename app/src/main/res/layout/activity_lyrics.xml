@@ -75,5 +75,11 @@
 
     <include layout="@layout/content_scrolling" />
 
+    <ImageView
+        android:id="@+id/noDataImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"/>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
